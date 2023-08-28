@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: post-sync-notification
-  namespace: argocd
+  namespace: staging
 spec:
   template:
     spec:
