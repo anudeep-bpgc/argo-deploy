@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+spec:
+  destination:
+    namespace: default # The namespace where the AppOfApps will be deployed
+    server: https://kubernetes.default.svc # The URL of your main ArgoCD cluster
+  source:
+    repoURL: 'https://github.com/anudeep-bpgc/argo-deploy.git'
+    path: my-prod # Path to the deployment files for the main cluster
+    targetRevision: HEAD # You can specify the desired revision here
+  project: default # The ArgoCD project to associate with
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: staging-apps
+  namespace: argocd
+spec:
+  destination:
+    namespace: staging # The namespace where the staging applications will be deployed
+    server: https://34.27.167.233 # The URL of your staging ArgoCD cluster
+  source:
+    repoURL: 'https://github.com/anudeep-bpgc/argo-deploy.git'
+    path: my-stag # Path to the deployment files for the staging cluster
+    targetRevision: HEAD # You can specify the desired revision here
+  project: default # The ArgoCD project to associate with
