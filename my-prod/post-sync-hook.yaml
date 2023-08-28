@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: post-sync-notification
+  namespace: argocd
+spec:
+  template:
+    spec:
+      containers:
+      - name: notify-flock
+        image: curlimages/curl
+        command: ["curl"]
+        args: ["-X", "POST", "-H", "Content-Type: application/json", "--data", "$(FLOCK_MESSAGE)", "https://api.flock.com/hooks/sendMessage/7c21ca61-5310-44cb-a92a-21a6436df966"]
+        env:
+        - name: FLOCK_MESSAGE
+          value: '{"text": "Production: ArgoCD sync completed!"}'
+      restartPolicy: Never
+  backoffLimit: 2
